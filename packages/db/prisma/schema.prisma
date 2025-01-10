@@ -13,8 +13,20 @@ model User {
   name        String? 
   number      String  @unique
   password    String
+  Balance Balance[]
+ OnRampTransaction OnRampTransaction[]
+ sentTransfers  p2pTransfer[] @relation(name:"fromUserRelation")
+ receiveTransfers  p2pTransfer[] @relation(name:"toUserRelation")
 }
-
+model p2pTransfer{
+  id Int @id @default(autoincrement())
+  amount Int
+  timeStamp DateTime
+  fromUserId Int 
+  toUserId Int
+  fromUser User @relation(name:"fromUserRelation" ,fields: [fromUserId],references: [id])
+  toUser User @relation(name: "toUserRelation",fields: [toUserId],references: [id])
+}
 model Merchant {
   id          Int     @id @default(autoincrement())
   email       String  @unique
@@ -25,4 +37,26 @@ model Merchant {
 enum AuthType {
   Google
   Github
+}
+model Balance {
+  id Int @id @default(autoincrement())
+  amount Int @default(0)
+  userId Int @unique
+  locked Int @default(0)
+  user User @relation(fields: [userId], references: [id])
+}
+model OnRampTransaction {
+  id Int @id @default(autoincrement())
+  status OnRampStatus
+  token String @unique
+  provider String
+  amount Int
+  startTime DateTime
+  userId Int
+  user User @relation(fields: [userId],references: [id])
+}
+enum OnRampStatus {
+Success
+Failure
+Processing
 }
