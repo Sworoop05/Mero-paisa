@@ -37,7 +37,6 @@ const TransactionsCard = async () => {
                     {new Date(field.timeStamp).toLocaleString()}
                   </span>
                 </div>
-
                 {field.fromUserId == Number(session?.user?.id) ? (
                   <span className="text-red-600"> - Rs {field.amount}</span>
                 ) : (

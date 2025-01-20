@@ -43,17 +43,29 @@ app.post('/nabil', async (req, res) => {
     if (isProcessing?.status == "Processing") {
         try {
             // Transaction logic here
-            await db.$transaction([
-                db.balance.updateMany({
-                    where: { userId: Number(paymentInformation.userId) },
-                    data: { amount: { increment: paymentInformation.amount } }
-                }),
-                db.onRampTransaction.update({
+            await db.$transaction(async (tx) => {
+                const isExist = await tx.balance.findFirst(
+                    {
+                        where: { userId: paymentInformation.userId },
+                        orderBy: {
+                            createdAt: "desc"
+                        }
+
+                    }
+
+                )
+                await tx.balance.create({
+                    data: {
+
+                    }
+                })
+
+                await tx.onRampTransaction.update({
 
                     where: { token: paymentInformation.token },
                     data: { status: "Success" }
                 })
-            ]);
+            });
 
             return res.status(200).json({ message: "Captured" });
         } catch (error) {

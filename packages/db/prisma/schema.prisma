@@ -13,7 +13,7 @@ model User {
   name        String? 
   number      String  @unique
   password    String
-  Balance Balance[]
+  Balance     Balance[] 
  OnRampTransaction OnRampTransaction[]
  sentTransfers  p2pTransfer[] @relation(name:"fromUserRelation")
  receiveTransfers  p2pTransfer[] @relation(name:"toUserRelation")
@@ -41,9 +41,10 @@ enum AuthType {
 model Balance {
   id Int @id @default(autoincrement())
   amount Int @default(0)
-  userId Int @unique
+  userId Int 
   locked Int @default(0)
-  user User @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  user User @relation( fields: [userId],references: [id],onDelete: Cascade,onUpdate: Cascade)
 }
 model OnRampTransaction {
   id Int @id @default(autoincrement())

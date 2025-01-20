@@ -17,7 +17,7 @@ async function SendMoney({
       message: "Unauthorized access",
     };
   }
-
+  const userInputAmount = Number(amount);
   const senderId = Number(session?.user?.id);
   const receiverNumber = phone?.toString();
   if (!receiverNumber || !senderId) {
@@ -70,33 +70,24 @@ async function SendMoney({
       }
 
       // Update sender's balance by decrementing the amount
-      await tx.balance.update({
-        where: {
-          userId: senderId,
-        },
+      await tx.balance.create({
         data: {
-          amount: {
-            decrement: amount,
-          },
+          userId: senderId,
+          amount: amount - userInputAmount,
         },
       });
-
       // Update receiver's balance by incrementing the amount
-      await tx.balance.update({
-        where: {
-          userId: receiverId,
-        },
+      await tx.balance.create({
         data: {
-          amount: {
-            increment: amount,
-          },
+          userId: receiverId,
+          amount: amount + userInputAmount,
         },
       });
 
       // Create the transfer record
       await tx.p2pTransfer.create({
         data: {
-          amount,
+          amount: userInputAmount,
           timeStamp: new Date(),
           fromUserId: senderId,
           toUserId: receiverId,

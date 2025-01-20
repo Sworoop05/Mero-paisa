@@ -10,23 +10,24 @@ const OnRampCard = ({ transaction }: { transaction: Transaction[] }) => {
         title="Recent transaction"
       >
         <div className="mb-10 flex flex-col gap-3">
-          {transaction.map((field) => {
-            return (
+          {transaction && transaction.length > 0 ? (
+            transaction.map((field) => (
               <div
-                className="flex justify-between border-b-2 w-full "
+                className="flex justify-between border-b-2 w-full"
                 key={field.id}
               >
                 <div className="flex flex-col">
                   <span className="text-lg">Received Npr</span>
                   <span className="text-sm opacity-70">
-                    {" "}
                     {new Date(field.startTime).toLocaleString()}
                   </span>
                 </div>
                 <span>+ Rs{field.amount / 100}</span>
               </div>
-            );
-          })}
+            ))
+          ) : (
+            <p>No transactions</p>
+          )}
         </div>
       </Card>
     </div>
