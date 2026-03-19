@@ -1,81 +1,118 @@
-# Turborepo starter
+# 💸 Mero Paisa
 
-This is an official starter Turborepo.
+> A full-stack personal finance and transaction management application built with a modern monorepo architecture.
 
-## Using this example
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js_14-000000?style=flat-square&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Turborepo](https://img.shields.io/badge/Turborepo-EF4444?style=flat-square&logo=turborepo&logoColor=white)](https://turbo.build/)
 
-Run the following command:
+---
 
-```sh
-npx create-turbo@latest
+## 📌 Overview
+
+**Mero Paisa** (meaning *My Money* in Nepali) is a full-stack transaction management app that helps users track, manage, and review personal finances. Built with **Next.js 14 App Router**, it leverages server actions for type-safe data mutations and a **Turborepo monorepo** structure for clean separation of concerns.
+
+---
+
+## ✨ Features
+
+- 💰 Track income and expense transactions
+- 📊 View transaction history with filters and summaries
+- 🔐 Server-side validation with type-safe API routes via Next.js server actions
+- 🗃️ Relational data modelling with Prisma ORM and PostgreSQL
+- 🧩 Monorepo architecture with shared UI component library
+- 🎨 Clean, responsive UI built with Tailwind CSS and shadcn/UI
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Database | PostgreSQL |
+| ORM | Prisma |
+| Styling | Tailwind CSS, shadcn/UI |
+| Monorepo | Turborepo |
+| Package Manager | pnpm |
+
+---
+
+## 📁 Project Structure
+
+```
+mero-paisa/
+├── apps/
+│   └── web/          # Next.js frontend + server actions
+├── packages/
+│   ├── ui/           # Shared React component library
+│   ├── db/           # Prisma schema & database client
+│   └── eslint-config/
+├── turbo.json
+└── package.json
 ```
 
-## What's inside?
+---
 
-This Turborepo includes the following packages/apps:
+## 🚀 Getting Started
 
-### Apps and Packages
+### Prerequisites
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+- Node.js 18+
+- PostgreSQL database
+- pnpm
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Installation
 
-### Utilities
+```bash
+# Clone the repository
+git clone https://github.com/Sworoop05/Mero-paisa.git
+cd Mero-paisa
 
-This Turborepo has some additional tools already setup for you:
+# Install dependencies
+pnpm install
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+# Set up environment variables
+cp apps/web/.env.example apps/web/.env
+# Add your DATABASE_URL to the .env file
 
-### Build
+# Push the database schema
+pnpm db:push
 
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
+# Start the development server
 pnpm dev
 ```
 
-### Remote Caching
+Open [http://localhost:3000](http://localhost:3000) to view the app.
 
-Turborepo can use a technique known as [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+---
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup), then enter the following commands:
+## 🔑 Environment Variables
 
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-npx turbo link
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/mero_paisa"
 ```
 
-## Useful Links
+---
 
-Learn more about the power of Turborepo:
+## 📜 Scripts
 
-- [Tasks](https://turbo.build/repo/docs/core-concepts/monorepos/running-tasks)
-- [Caching](https://turbo.build/repo/docs/core-concepts/caching)
-- [Remote Caching](https://turbo.build/repo/docs/core-concepts/remote-caching)
-- [Filtering](https://turbo.build/repo/docs/core-concepts/monorepos/filtering)
-- [Configuration Options](https://turbo.build/repo/docs/reference/configuration)
-- [CLI Usage](https://turbo.build/repo/docs/reference/command-line-reference)
+| Command | Description |
+|---|---|
+| `pnpm dev` | Start all apps in development mode |
+| `pnpm build` | Build all apps and packages |
+| `pnpm db:push` | Push Prisma schema to database |
+| `pnpm db:studio` | Open Prisma Studio |
+
+---
+
+## 👤 Author
+
+**Sworoop Bhandari**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/sworoop-bhandari-942444316/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Sworoop05)
