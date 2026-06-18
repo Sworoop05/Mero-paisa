@@ -1,7 +1,11 @@
 import React from "react";
+import { getDashboardStats } from "../../lib/actions/dashboard";
+import DashboardClient from "../_components/DashboardClient";
 
-const page = () => {
-  return <div>dashboard</div>;
+const DashboardPage = async () => {
+  const stats = await getDashboardStats();
+
+  return <DashboardClient stats={stats} />;
 };
 
-export default page;
+export default DashboardPage;

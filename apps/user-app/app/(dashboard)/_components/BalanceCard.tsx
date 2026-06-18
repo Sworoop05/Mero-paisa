@@ -9,8 +9,7 @@ interface BalanceType {
 }
 
 const BalanceCard = ({ balance }: { balance: BalanceType }) => {
-  // Safely get the first balance entry or provide a default object
-  let balanceData = balance;
+  const balanceData = balance;
   console.log(balanceData);
   return (
     <div>
@@ -30,7 +29,9 @@ const BalanceCard = ({ balance }: { balance: BalanceType }) => {
         </div>
         <div className="flex justify-between border-b-2 w-full">
           <span>Total Balance</span>
-          <span>Rs {balanceData?.amount + balanceData?.locked || 0}</span>
+          <span>
+            Rs {(balanceData?.amount ?? 0) + (balanceData?.locked ?? 0)}
+          </span>
         </div>
       </Card>
     </div>

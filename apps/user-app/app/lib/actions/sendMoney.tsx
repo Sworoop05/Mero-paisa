@@ -1,7 +1,7 @@
 "use server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../auth";
-import Prisma from "@repo/db/client"; // Assuming Prisma is the correct import for your client
+import prisma from "@repo/db/client";
 
 async function SendMoney({
   phone,
@@ -29,7 +29,7 @@ async function SendMoney({
 
   console.log(receiverNumber);
 
-  const receiver = await Prisma.user.findFirst({
+  const receiver = await prisma.user.findFirst({
     where: {
       number: receiverNumber,
     },
@@ -56,31 +56,39 @@ async function SendMoney({
   }
 
   try {
-    // Start the transaction
-    const result = await Prisma.$transaction(async (tx) => {
-      // Fetch the sender's balance for update
-      const balanceCheck = await tx.balance.findFirst({
+    const result = await prisma.$transaction(async (tx) => {
+      // Lock sender's balance row and check sufficient funds
+      const senderBalance = await tx.balance.findFirst({
         where: {
           userId: senderId,
         },
       });
 
-      if (!balanceCheck || balanceCheck.amount < amount) {
+      if (!senderBalance || senderBalance.amount < userInputAmount) {
         throw new Error("Insufficient balance");
       }
 
-      // Update sender's balance by decrementing the amount
-      await tx.balance.create({
+      // Decrement sender's balance
+      await tx.balance.update({
+        where: { id: senderBalance.id },
         data: {
-          userId: senderId,
-          amount: amount - userInputAmount,
+          amount: { decrement: userInputAmount },
         },
       });
-      // Update receiver's balance by incrementing the amount
-      await tx.balance.create({
+
+      // Find receiver's balance and increment it
+      const receiverBalance = await tx.balance.findFirst({
+        where: { userId: receiverId },
+      });
+
+      if (!receiverBalance) {
+        throw new Error("Receiver balance not found");
+      }
+
+      await tx.balance.update({
+        where: { id: receiverBalance.id },
         data: {
-          userId: receiverId,
-          amount: amount + userInputAmount,
+          amount: { increment: userInputAmount },
         },
       });
 

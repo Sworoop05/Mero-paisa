@@ -1,8 +1,7 @@
 "use server";
-import React from "react";
 import { authOptions } from "../auth";
 import { getServerSession } from "next-auth";
-import Prisma from "@repo/db/client";
+import prisma from "@repo/db/client";
 const CreateonRampTransaction = async (amount: number, provider: string) => {
   //ideally token should come here from the banks
   const session = await getServerSession(authOptions);
@@ -13,7 +12,7 @@ const CreateonRampTransaction = async (amount: number, provider: string) => {
     };
   }
   const token = Math.floor(Math.random() * 99999999 + 100000000).toString();
-  const result = await Prisma.onRampTransaction.create({
+  await prisma.onRampTransaction.create({
     data: {
       userId: Number(userId),
       amount,

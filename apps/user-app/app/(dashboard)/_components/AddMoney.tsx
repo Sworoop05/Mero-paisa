@@ -3,7 +3,6 @@ import { Card } from "@repo/ui/card";
 import { Button } from "@repo/ui/button";
 import { Inputbox } from "@repo/ui/inputbox";
 import { Selectbox } from "@repo/ui/selectbox";
-import { getOnRampTransaction } from "../_utility/databasecall";
 import { useState } from "react";
 import CreateonRampTransaction from "../../lib/actions/onRampTransaction";
 import { useRouter } from "next/navigation";
@@ -11,7 +10,7 @@ import { useRouter } from "next/navigation";
 const AddMoney = () => {
   const router = useRouter();
   const options = ["Nabil bank", "Sanima bank"];
-  const [amount, setAmount] = useState<number>();
+  const [amount, setAmount] = useState<number>(0);
   const [bankoption, setBankoption] = useState<string>("Nabil bank");
   const onChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAmount(Number(e.target.value));
@@ -22,7 +21,11 @@ const AddMoney = () => {
   };
 
   const addMoneyHandler = async () => {
-    await CreateonRampTransaction(Number(amount) * 100, bankoption);
+    if (!amount || amount <= 0) {
+      alert("Please enter a valid amount");
+      return;
+    }
+    await CreateonRampTransaction(amount * 100, bankoption);
     if (bankoption == "Nabil bank") {
       router.push("https://www.nabilbank.com/");
     } else {

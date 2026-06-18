@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import SidebarItem from "./SidebarItem";
 const Sidebar = () => {
   return (
